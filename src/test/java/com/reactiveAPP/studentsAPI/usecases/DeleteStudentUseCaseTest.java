@@ -31,8 +31,8 @@ class DeleteStudentUseCaseTest {
     }
 
     @Test
-    @DisplayName("deleteCourseByID_Success")
-    void deleteCourse(){
+    @DisplayName("deleteStudentByID_Success")
+    void deleteStudent(){
         var studentID = "ID1";
         var student = Mono.just(InstanceProvider.getStudent());
 
@@ -48,7 +48,7 @@ class DeleteStudentUseCaseTest {
     }
 
     @Test
-    @DisplayName("deleteCourseByNonExistingID_Unsuccess")
+    @DisplayName("deleteStudentByNonExistingID_Unsuccess")
     void deleteCourseUnsuccess(){
         var courseID = "ID1";
         var course = Mono.just(InstanceProvider.getStudent());
