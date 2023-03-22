@@ -32,7 +32,7 @@ class SaveStudentUseCaseTest {
     }
 
     @Test
-    @DisplayName("saveCourse_Success")
+    @DisplayName("saveStudent_Success")
     void SaveCourse(){
         var studentDTO =mapper.map(InstanceProvider.getStudent(), StudentDTO.class);
 
