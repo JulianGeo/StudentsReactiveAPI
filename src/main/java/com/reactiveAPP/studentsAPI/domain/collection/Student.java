@@ -1,5 +1,6 @@
 package com.reactiveAPP.studentsAPI.domain.collection;
 
+import com.reactiveAPP.studentsAPI.domain.course.Course;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -33,5 +34,5 @@ public class Student {
     //TODO: add email validation
     private String email;
     private String plan;
-    private Set<String> courses = new HashSet<>();
+    private Set<Course> courses = new HashSet<>();
 }
