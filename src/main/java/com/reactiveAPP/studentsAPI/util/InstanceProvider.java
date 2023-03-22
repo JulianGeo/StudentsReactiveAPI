@@ -17,7 +17,7 @@ public class InstanceProvider {
     }
 
     public static Student getStudent(){
-        return new Student("Id3", "idNum3", "Elvis", "Costello", "elvis@gmail.com","basic",getCourses());
+        return new Student("Id1", "idNum1", "Elvis", "Crespo", "elvis@gmail.com","basic",new HashSet<>());
     }
 
     public static Student getStudentToUpdate(){
