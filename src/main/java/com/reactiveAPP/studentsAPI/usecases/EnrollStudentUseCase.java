@@ -26,15 +26,11 @@ public class EnrollStudentUseCase implements BiFunction<String, Course, Mono<Stu
 
     @Override
     public Mono<StudentDTO> apply(String studentID, Course course){
-        //System.out.println("Book id: " + id);
-        //System.out.println("Student id: " + idEst);
+
         return this.studentRepository
                 .findById(studentID)
                 .switchIfEmpty(Mono.error(new Throwable("Student not found")))
-                //.filter(Book::getAvailable)
-                //.switchIfEmpty(Mono.empty())
                 .flatMap(student -> {
-                    //System.out.println("Book to be lended "+book.toString());
                     Set<Course> courses = student.getCourses();
                     courses.add(course);
                     student.setCourses(courses);
@@ -42,7 +38,7 @@ public class EnrollStudentUseCase implements BiFunction<String, Course, Mono<Stu
                 .map(student1 -> mapper.map(student1, StudentDTO.class))
                 .doOnSuccess(studentDTO1 -> {
                     try {
-                        studentPublisher.publish(studentDTO1.getId(), course.getId());
+                        studentPublisher.publish(studentDTO1.getId(), course.getId(), "enroll");
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }

@@ -3,19 +3,12 @@ package com.reactiveAPP.studentsAPI.publisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reactiveAPP.studentsAPI.config.RabbitConfig;
-import com.reactiveAPP.studentsAPI.domain.dto.StudentDTO;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudentPublisher {
     private final RabbitTemplate rabbitTemplate;
-    //private final DirectExchange exchange;
     private final ObjectMapper objectMapper;
 
 
@@ -26,9 +19,8 @@ public class StudentPublisher {
 
 
 
-    public void publish(String studentID, String courseID) throws JsonProcessingException {
-        //String message = objectMapper.writeValueAsString("Book with id "+bookDTO.getId()+" has been lended to student with id "+id);
-        String message = objectMapper.writeValueAsString(new StudentEvent(studentID, courseID, "enroll"));
+    public void publish(String studentID, String courseID, String eventType) throws JsonProcessingException {
+        String message = objectMapper.writeValueAsString(new StudentEvent(studentID, courseID, eventType));
         rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, message);
     }
 

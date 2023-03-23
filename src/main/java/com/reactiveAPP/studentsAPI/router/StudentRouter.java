@@ -85,7 +85,7 @@ public class StudentRouter {
                                 .uri("/api/courses/"+request.pathVariable("id_c"))
                                 .retrieve()
                                 .bodyToMono(Course.class)
-                                //.switchIfEmpty(Mono.empty())
+                                .switchIfEmpty(Mono.error(new Throwable("Course not found")))
                                 .flatMap(course -> enrollStudentUseCase
                                         .apply(request.pathVariable("id_e"),course)
                                         .flatMap(studentDTO -> ServerResponse.ok()
@@ -96,6 +96,24 @@ public class StudentRouter {
 
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> unenrollStudent(UnenrollStudentUseCase unenrollStudentUseCase){
+        return route(PUT("api/students/{id_e}/unenroll/{id_c}"),
+                request ->
+                        courseAPI.get()
+                                .uri("/api/courses/"+request.pathVariable("id_c"))
+                                .retrieve()
+                                .bodyToMono(Course.class)
+                                .switchIfEmpty(Mono.error(new Throwable("Course not found")))
+                                .flatMap(course -> unenrollStudentUseCase
+                                        .apply(request.pathVariable("id_e"),course)
+                                        .flatMap(studentDTO -> ServerResponse.ok()
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(studentDTO))
+                                        .onErrorResume(throwable -> ServerResponse.badRequest().build())));
+        //.onErrorResume(throwable -> ServerResponse.badRequest().bodyValue(StudentDTO.class)));
+
+    }
 
     @Bean
     public RouterFunction<ServerResponse> deleteStudentById(DeleteStudentUseCase deleteStudentUseCase){
