@@ -31,16 +31,16 @@ public class UnenrollStudentUseCase implements BiFunction<String, Course, Mono<S
                 .switchIfEmpty(Mono.error(new Throwable("Student not found")))
                 .flatMap(student -> {
                     Set<Course> courses = student.getCourses();
-                    if (!courses.contains(course)){
+                    /*if (!courses.contains(course)){
                         return Mono.error(new Throwable("Student is not enrolled yet"));
-                    }
+                    }*/
                     courses.remove(course);
                     student.setCourses(courses);
                     return this.studentRepository.save(student);})
                 .map(student1 -> mapper.map(student1, StudentDTO.class))
                 .doOnSuccess(studentDTO1 -> {
                     try {
-                        studentPublisher.publish(studentDTO1.getId(), course.getId(), "unenroll");
+                        studentPublisher.publish(studentDTO1, course.getId(), "unenroll");
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }

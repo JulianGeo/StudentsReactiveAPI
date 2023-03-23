@@ -38,7 +38,7 @@ public class EnrollStudentUseCase implements BiFunction<String, Course, Mono<Stu
                 .map(student1 -> mapper.map(student1, StudentDTO.class))
                 .doOnSuccess(studentDTO1 -> {
                     try {
-                        studentPublisher.publish(studentDTO1.getId(), course.getId(), "enroll");
+                        studentPublisher.publish(studentDTO1, course.getId(), "enroll");
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }

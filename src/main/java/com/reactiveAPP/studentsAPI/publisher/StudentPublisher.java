@@ -3,6 +3,7 @@ package com.reactiveAPP.studentsAPI.publisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reactiveAPP.studentsAPI.config.RabbitConfig;
+import com.reactiveAPP.studentsAPI.domain.dto.StudentDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class StudentPublisher {
 
 
 
-    public void publish(String studentID, String courseID, String eventType) throws JsonProcessingException {
+    public void publish(StudentDTO studentID, String courseID, String eventType) throws JsonProcessingException {
         String message = objectMapper.writeValueAsString(new StudentEvent(studentID, courseID, eventType));
         rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, message);
     }

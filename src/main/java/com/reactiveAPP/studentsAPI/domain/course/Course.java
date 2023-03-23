@@ -1,6 +1,7 @@
 package com.reactiveAPP.studentsAPI.domain.course;
 
 import com.reactiveAPP.studentsAPI.domain.collection.Student;
+import com.reactiveAPP.studentsAPI.domain.dto.StudentDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -24,5 +25,5 @@ public class Course {
     private String description;
     private String coach;
     private String level;
-    private Set<String> studentsID=new HashSet<>();
+    private Set<StudentDTO> students=new HashSet<>();
 }
