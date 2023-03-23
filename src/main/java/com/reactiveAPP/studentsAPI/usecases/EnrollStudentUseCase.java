@@ -31,8 +31,8 @@ public class EnrollStudentUseCase implements BiFunction<String, Course, Mono<Stu
                 .findById(studentID)
                 .switchIfEmpty(Mono.error(new Throwable("Student not found")))
                 .flatMap(student -> {
-                    Set<Course> courses = student.getCourses();
-                    courses.add(course);
+                    Set<String> courses = student.getCourses();
+                    courses.add(course.getId());
                     student.setCourses(courses);
                     return this.studentRepository.save(student);})
                 .map(student1 -> mapper.map(student1, StudentDTO.class))

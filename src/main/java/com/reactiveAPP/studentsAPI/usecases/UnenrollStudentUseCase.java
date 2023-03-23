@@ -30,11 +30,11 @@ public class UnenrollStudentUseCase implements BiFunction<String, Course, Mono<S
                 .findById(studentID)
                 .switchIfEmpty(Mono.error(new Throwable("Student not found")))
                 .flatMap(student -> {
-                    Set<Course> courses = student.getCourses();
+                    Set<String> courses = student.getCourses();
                     /*if (!courses.contains(course)){
                         return Mono.error(new Throwable("Student is not enrolled yet"));
                     }*/
-                    courses.remove(course);
+                    courses.remove(course.getId());
                     student.setCourses(courses);
                     return this.studentRepository.save(student);})
                 .map(student1 -> mapper.map(student1, StudentDTO.class))

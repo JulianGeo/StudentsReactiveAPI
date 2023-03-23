@@ -32,5 +32,5 @@ public class StudentDTO {
     //TODO: add email validation
     private String email;
     private String plan;
-    private Set<Course> courses = new HashSet<>();
+    private Set<String> courses = new HashSet<>();
 }
