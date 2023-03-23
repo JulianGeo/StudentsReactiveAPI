@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StudentEvent {
+        private String studentID;
         private String courseID;
-        private StudentDTO studentEnrolled;
         private String eventType;
 }

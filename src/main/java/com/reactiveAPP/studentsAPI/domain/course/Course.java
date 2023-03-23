@@ -24,5 +24,5 @@ public class Course {
     private String description;
     private String coach;
     private String level;
-    private Set<Student> students=new HashSet<>();
+    private Set<String> studentsID=new HashSet<>();
 }
