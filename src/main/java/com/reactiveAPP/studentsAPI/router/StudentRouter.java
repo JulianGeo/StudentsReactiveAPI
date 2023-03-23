@@ -1,6 +1,7 @@
 package com.reactiveAPP.studentsAPI.router;
 
 import com.reactiveAPP.studentsAPI.domain.collection.Student;
+import com.reactiveAPP.studentsAPI.domain.course.Course;
 import com.reactiveAPP.studentsAPI.domain.dto.StudentDTO;
 import com.reactiveAPP.studentsAPI.repository.StudentRepository;
 import com.reactiveAPP.studentsAPI.usecases.*;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -25,6 +27,12 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Component
 @AllArgsConstructor
 public class StudentRouter {
+
+    private WebClient courseAPI;
+
+    public StudentRouter(){
+        courseAPI = WebClient.create("http://localhost:8081");
+    }
 
     @Bean
     public RouterFunction<ServerResponse> getAllStudents(GetAllStudentsUseCase getAllStudentsUseCase){
@@ -70,6 +78,26 @@ public class StudentRouter {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> enrollStudent(EnrollStudentUseCase enrollStudentUseCase){
+        return route(PUT("api/students/{id_e}/enroll/{id_c}"),
+                request ->
+                        courseAPI.get()
+                                .uri("/api/courses/"+request.pathVariable("id_c"))
+                                .retrieve()
+                                .bodyToMono(Course.class)
+                                //.switchIfEmpty(Mono.empty())
+                                .flatMap(course -> enrollStudentUseCase
+                                        .apply(request.pathVariable("id_e"),course)
+                                        .flatMap(studentDTO -> ServerResponse.ok()
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(studentDTO))
+                                        .onErrorResume(throwable -> ServerResponse.badRequest().build())));
+        //.onErrorResume(throwable -> ServerResponse.badRequest().bodyValue(StudentDTO.class)));
+
+    }
+
+
+    @Bean
     public RouterFunction<ServerResponse> deleteStudentById(DeleteStudentUseCase deleteStudentUseCase){
         return route(DELETE("api/students/{id}"),
                 request -> deleteStudentUseCase.apply(request.pathVariable("id"))
@@ -79,5 +107,7 @@ public class StudentRouter {
                         .flatMap(serverResponseMono -> serverResponseMono)
                         .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NO_CONTENT).bodyValue(throwable.getMessage())));
     }
+
+
 
 }
