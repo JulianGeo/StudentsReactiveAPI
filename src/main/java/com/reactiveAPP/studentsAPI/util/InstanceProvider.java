@@ -24,6 +24,10 @@ public class InstanceProvider {
         return new Student("Id3", "idNum3", "Elvis", "Costello", "elvis@gmail.com","basic",getCourses());
     }
 
+    public static Course getCourse(){
+        return new Course("ID3", "React1","React course" ,"Adryan", "3", new HashSet<>());
+    }
+
     public static Set<String> getCourses(){
         return Set.of(
                 "ID1",
