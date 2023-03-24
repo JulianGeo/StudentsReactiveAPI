@@ -47,7 +47,11 @@ class UpdateStudentUseCaseTest {
                 mapper.map(newStudent, StudentDTO.class));
 
         StepVerifier.create(service)
-                .expectNextCount(1)
+                .expectNextMatches(
+                        studentDTO -> studentDTO.getLastname().equals(
+                                InstanceProvider
+                                        .getStudentToUpdate()
+                                        .getLastname()))
                 .verifyComplete();
         Mockito.verify(repoMock).findById(studentID);
         Mockito.verify(repoMock).save(ArgumentMatchers.any(Student.class));
@@ -69,12 +73,8 @@ class UpdateStudentUseCaseTest {
                 //Test to check that the expected stream is of 0 size
                 //.expectNextCount(0)
                 //Test to check an expected error
-                .expectError(IllegalArgumentException.class)
+                .expectErrorMessage("No student matches the provided ID")
                 .verify();
         Mockito.verify(repoMock).findById(studentID);
-
-        //Mockito.verify(repoMock).save(ArgumentMatchers.any(Student.class));
     }
-
-
 }

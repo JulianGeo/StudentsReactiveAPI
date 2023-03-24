@@ -57,8 +57,8 @@ class GetStudentByIdUseCaseTest {
         var service = getStudentByIdUseCase.apply(studentID);
 
         StepVerifier.create(service)
-                .expectNextCount(0)
-                .verifyComplete();
+                .expectErrorMessage("Student not found")
+                .verify();
         Mockito.verify(repoMock).findById(studentID);
     }
 

@@ -21,7 +21,7 @@ public class UpdateStudentUseCase implements BiFunction<String, StudentDTO, Mono
     public Mono<StudentDTO> apply(String id, StudentDTO studentDTO) {
         return this.studentRepository
                 .findById(id)
-                .switchIfEmpty(Mono.error(new IllegalArgumentException("No student matches the provided ID")))
+                .switchIfEmpty(Mono.error(new Throwable("No student matches the provided ID")))
                 .flatMap(student ->{
                     studentDTO.setId(student.getId());
                     return studentRepository.save(mapper.map(studentDTO, Student.class));

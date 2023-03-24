@@ -42,7 +42,14 @@ class GetAllStudentsUseCaseTest {
         var service = getAllStudentsUseCase.get();
 
         StepVerifier.create(service)
-                .expectNextCount(3)
+                .expectNextMatches(
+                        studentDTO -> studentDTO.getEmail().equals(
+                                InstanceProvider
+                                        .getStudents()
+                                        .iterator()
+                                        .next()
+                                        .getEmail()))
+                .expectNextCount(2)
                 .verifyComplete();
         Mockito.verify(repoMock).findAll();
     }

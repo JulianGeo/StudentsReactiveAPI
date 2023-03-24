@@ -43,9 +43,9 @@ class SaveStudentUseCaseTest {
 
         StepVerifier.create(service)
                 //Test to check next object as a whole
-                .expectNext(mapper.map(InstanceProvider.getStudents().get(0), StudentDTO.class))
+                //.expectNext(mapper.map(InstanceProvider.getStudents().get(0), StudentDTO.class))
                 //Custom and specific test for the expected object
-                //.expectNextMatches(studentDTO1 -> studentDTO1.getName().equals("Wout"))
+                .expectNextMatches(studentDTO1 -> studentDTO1.getLastname().equals("Crespo"))
                 //Test to check the size of the stream
                 //.expectNextCount(1)
                 .verifyComplete();

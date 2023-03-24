@@ -27,7 +27,7 @@ class DeleteStudentUseCaseTest {
     @BeforeEach
     void init(){
         mapper = new ModelMapper();
-        deleteStudentUseCase = new DeleteStudentUseCase(repoMock, mapper);
+        deleteStudentUseCase = new DeleteStudentUseCase(repoMock);
     }
 
     @Test

@@ -21,15 +21,14 @@ public class InstanceProvider {
     }
 
     public static Student getStudentToUpdate(){
-        //return new Student("Id3", "idNum3", "Elvis", "Crespo", "elvis@gmail.com","basic",getCourses());
-        return null;
+        return new Student("Id3", "idNum3", "Elvis", "Costello", "elvis@gmail.com","basic",getCourses());
     }
 
-    public static Set<Course> getCourses(){
+    public static Set<String> getCourses(){
         return Set.of(
-                new Course("ID3", "React1","React course" ,"Adryan", "3", new HashSet<>()),
-                new Course("ID3", "React2","React course 1" ,"Raul", "3", new HashSet<>()),
-                new Course("ID3", "React3","React course 2" ,"Mishel", "5", new HashSet<>())
+                "ID1",
+                "ID2",
+                "ID3"
         );
     }
 }
