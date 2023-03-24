@@ -44,11 +44,13 @@ class UnenrollStudentUseCaseTest {
         var student = InstanceProvider.getStudent();
         var course = InstanceProvider.getCourse();
 
-        Mockito.when(repoMock.findById(ArgumentMatchers.anyString())).thenReturn(monoStudent);
-        Mockito.when(repoMock.save(ArgumentMatchers.any(Student.class))).thenReturn(monoStudent);
+        Mockito.when(repoMock.findById(ArgumentMatchers.anyString()))
+                .thenReturn(monoStudent);
+        Mockito.when(repoMock.save(ArgumentMatchers.any(Student.class)))
+                .thenReturn(monoStudent);
 
-        var service = unenrollStudentUseCase.apply(studentID,
-                course);
+        var service = unenrollStudentUseCase
+                .apply(studentID,course);
 
         StepVerifier.create(service)
                 .expectNextMatches(
@@ -57,6 +59,7 @@ class UnenrollStudentUseCaseTest {
                                         .getStudent()
                                         .getLastname()))
                 .verifyComplete();
+
         Mockito.verify(repoMock).findById(studentID);
         Mockito.verify(repoMock).save(ArgumentMatchers.any(Student.class));
     }
