@@ -5,13 +5,19 @@ import com.reactiveAPP.studentsAPI.domain.course.Course;
 import com.reactiveAPP.studentsAPI.domain.dto.StudentDTO;
 import com.reactiveAPP.studentsAPI.repository.StudentRepository;
 import com.reactiveAPP.studentsAPI.usecases.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -35,6 +41,13 @@ public class StudentRouter {
     }
 
     @Bean
+    @RouterOperation(path = "/api/students", produces = {
+            MediaType.APPLICATION_JSON_VALUE},
+            beanClass = GetAllStudentsUseCase.class, method = RequestMethod.GET, beanMethod = "get",
+            operation = @Operation(operationId = "getAllStudents", tags = "Student usecases", responses = {
+                    @ApiResponse(responseCode = "200", description = "Success",
+                            content = @Content(schema = @Schema(implementation = StudentDTO.class))),
+                    @ApiResponse(responseCode = "204", description = "Nothing to show")}))
     public RouterFunction<ServerResponse> getAllStudents(GetAllStudentsUseCase getAllStudentsUseCase){
         return route(GET("/api/students"),
                 request -> ServerResponse.status(201)
